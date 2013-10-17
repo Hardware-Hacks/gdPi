@@ -1,0 +1,16 @@
+{
+  "name": "gpPi",
+  "version": "1.0.0",
+  "description": "api to be installed locally on Rpi that works with our goPro app",
+  "author": "dan and sean",
+  "scripts": {
+    "preinstall": "npm i -g prettyjson"
+  },
+  "dependencies": {
+    "express": "3.0.x",
+    "prettyjson": "0.7.0",
+    "request": "2.12.0",
+    "ejs": "0.8.3"
+  },
+  "engine": "node 0.8.x"
+}
