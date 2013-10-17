@@ -12,10 +12,9 @@ app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
   var actionNumber = req.params.actionNumber;
 
  request(
-    { method: 'GET'
-    , uri: 'http://' + ip + '/bacpac/' + action + '?t=' + password + '&p=%' + actionNumber
-    }
-  , function (error, response, body) {
+    { method: 'GET', 
+      uri: 'http://' + ip + '/bacpac/' + action + '?t=' + password + '&p=%' + actionNumber
+    }, function (error, response, body) {
       console.log(response.statusCode)
     }
   )
