@@ -1,7 +1,5 @@
-var url = require('url');
 var request = require('request');
 var express = require('express');
-var ejs = require('ejs');
 
 var app = express();
   
@@ -15,7 +13,7 @@ app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
     { method: 'GET', 
       uri: 'http://' + ip + '/bacpac/' + action + '?t=' + password + '&p=%' + actionNumber
     }, function (error, response, body) {
-      console.log(response.statusCode)
+      console.log("recording")
     }
   )
 
