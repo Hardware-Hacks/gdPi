@@ -9,14 +9,15 @@ app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
   var action = req.params.action;
   var actionNumber = req.params.actionNumber;
 
-  console.log('being hit');
+  console.log(action + '/' + actionNumber);
 
   request({
     method: 'GET', 
     uri: 'http://' + ip + '/bacpac/' + action + '?t=' + password + '&p=%' + actionNumber
   }, function (error, res, body) {
     response.header('Access-Control-Allow-Origin', "*");    
-    response.end('write');   
+    console.log(response)
+    response.end();   
   });
 
 
