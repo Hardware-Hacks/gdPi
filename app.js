@@ -16,13 +16,13 @@ app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
   console.log(action + '/' + actionNumber);
 
   request({
-    method: 'GET', 
+    method: 'GET',
     uri: 'http://' + ip + '/bacpac/' + action + '?t=' + password + '&p=%' + actionNumber
   }, function (error, res, body) {
-    response.header('Access-Control-Allow-Origin', "*");    
+    response.header('Access-Control-Allow-Origin', "*");
     console.log(response);
     response.writeHead('temp');
-    response.end();   
+    response.end();
   });
 
 });
@@ -48,7 +48,7 @@ app.get('/videoDog', function(req, res) {
   var creq = http.request(options, function(cres) {
 
     res.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-    // res.setHeader('Content-Type', 'multipart/x-mixed-replace');        
+    // res.setHeader('Content-Type', 'multipart/x-mixed-replace');
     res.setHeader('Connection', 'close');
     res.setHeader('Pragma', 'no-cache');
     res.setHeader('Cache-Control', 'no-cache, private');
@@ -59,12 +59,12 @@ app.get('/videoDog', function(req, res) {
     var body = "";
     cres.on('data', function(chunk){
       console.log("cres.on data");
-      body += chunk;      
+      body += chunk;
     });
 
     cres.on('end', function(){
       var stream = new Stream();
-      var parser = m3u8.createStream();      
+      var parser = m3u8.createStream();
       stream.pipe = function(dest) {
         console.log('stream.pipe');
         console.log(body);
@@ -76,7 +76,7 @@ app.get('/videoDog', function(req, res) {
 
       stream.pipe(parser);
 
-      parser.on('item', function(item) {      
+      parser.on('item', function(item) {
         console.log('parse on item');
         item.set('uri', 'http://10.5.5.9/live/' + item.get('uri'));
       });
@@ -103,36 +103,33 @@ app.get('/videoDog', function(req, res) {
 });
 
 
+var buffer = hls('http://10.5.5.9:8080/live/amba.m3u8');
+
 app.get('/index.m3u8', function(request, response) {
+  // first return a playlist
+  buffer.playlist(function(err, pl) {
+    response.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
+    console.log(pl);
+    response.end(pl);
+  });
+});
 
-  var buffer = hls('http://10.5.5.9:8080/live/amba.m3u8');
-
-  if (request.url === '/index.m3u8') {
-        // first return a playlist
-        buffer.playlist(function(err, pl) {
-            response.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
-            console.log(pl);
-            response.end(pl);
-        });
-    } else {
-        // else return the linked segment
-        var stream = buffer.segment(request.url);
-        response.setHeader('Content-Type', 'video/mp2s');
-        stream.pipe(response);
-    }
-
-});  
-
+app.get('/:hash.ts', function(request, response) {
+  // return the linked segment
+  var stream = buffer.segment(request.url);
+  response.setHeader('Content-Type', 'video/mp2s');
+  stream.pipe(response);
+});
 
 // app.get('/video', function(req, res) {
 //     request({
-//       method: 'GET', 
+//       method: 'GET',
 //       uri: 'http://10.5.5.9:8080/live/amba.m3u8'
 //     }, function (error, res, body) {
-//       response.header('Access-Control-Allow-Origin', "*");    
+//       response.header('Access-Control-Allow-Origin', "*");
 //       console.log(response);
 //       response.writeHead('temp');
-//       response.end();   
+//       response.end();
 //     });
 
 //   // var remoteUrl = remote + req.url;
