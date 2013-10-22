@@ -2,19 +2,25 @@
   "name": "gpPi",
   "version": "1.0.0",
   "description": "api to be installed locally on Rpi that works with our goPro app",
-  "author": "dan and sean",
-  "scripts": {
-    "preinstall": "npm i -g prettyjson"
-  },
+  "contributors": [{
+    "name": "Sean Devlin",
+    "email": "support@frontrush.com",
+    "url": "http://www.frontrush.com/"
+  }, {
+    "name": "Dan Mundy",
+    "email": "drmmundy@me.com",
+    "url": "http://exch.gr/"
+  }],
   "dependencies": {
     "express": "3.0.x",
-    "prettyjson": "0.7.0",
-    "request": "2.12.0",
-    "socket.io":"latest",
-    "socket.io-stream":"latest",
-    "m3u8":"latest",
-    "stream":"latest",
-    "http":"latest"
+    "prettyjson": "~0.7.0",
+    "request": "~2.12.0",
+    "socket.io": "~0.9.16",
+    "socket.io-stream": "~0.5.0",
+    "m3u8": "~0.0.5",
+    "hls-buffer": "~0.1.5"
   },
-  "engine": "node 0.8.x"
+  "engines": {
+    "node": "0.10.x"
+  }
 }
