@@ -1,6 +1,10 @@
 {
   "name": "gpPi",
   "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/seandevs/gdPi.git"
+  }
   "description": "api to be installed locally on Rpi that works with our goPro app",
   "contributors": [{
     "name": "Sean Devlin",
