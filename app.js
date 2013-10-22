@@ -3,6 +3,7 @@ var express = require('express');
 var http = require('http');
 var Stream = require('stream');
 var m3u8 = require('m3u8');
+var hls = require('hls-buffer');
 
 var app = express();
 
@@ -100,6 +101,28 @@ app.get('/videoDog', function(req, res) {
   creq.end();
 
 });
+
+
+app.get('/index.m3u8', function(request, response) {
+
+  var buffer = hls('http://10.5.5.9:8080/live/amba.m3u8');
+
+  if (request.url === '/index.m3u8') {
+        // first return a playlist
+        buffer.playlist(function(err, pl) {
+            response.setHeader('Content-Type', 'application/vnd.apple.mpegurl');
+            console.log(pl);
+            response.end(pl);
+        });
+    } else {
+        // else return the linked segment
+        var stream = buffer.segment(request.url);
+        response.setHeader('Content-Type', 'video/mp2s');
+        stream.pipe(response);
+    }
+
+});  
+
 
 // app.get('/video', function(req, res) {
 //     request({
