@@ -1,6 +1,7 @@
 var request = require('request');
 var express = require('express');
 var http = require('http');
+var url = require('url');
 var Stream = require('stream');
 var m3u8 = require('m3u8');
 var hls = require('hls-buffer');
@@ -11,6 +12,10 @@ var app = express();
 var previewURL = "http://10.5.5.9:8080/live/amba.m3u8"
 var statusURL = "http://10.5.5.9/CMD?t=PWD"
 var commandURL = "http://10.5.5.9/CMD?t=PWD&p=%VAL"
+
+var _hexToDec = function(val) {
+  return parseInt(val, 16);
+}
 
 var commands = {
   'power': {
@@ -173,6 +178,17 @@ var statuses = {
     }
   }
 }
+
+app.get('/status', function(req, res) {
+  var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
+
+  for (cmd in statuses) {
+    url = statusURL.replace('CMD', cmd).replace('PWD', password);
+    res.write(url + '\n');
+  }
+
+  res.end();
+});
 
 app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
   var ip = req.params.ip;
