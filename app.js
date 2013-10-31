@@ -1,7 +1,6 @@
-var request = require('request');
 var express = require('express');
 var http = require('http');
-var url = require('url');
+var _ = require('underscore');
 var Stream = require('stream');
 var m3u8 = require('m3u8');
 var hls = require('hls-buffer');
@@ -9,9 +8,27 @@ var hls = require('hls-buffer');
 var app = express();
 
 // Credit: https://github.com/joshvillbrandt/GoProController/
-var previewURL = "http://10.5.5.9:8080/live/amba.m3u8"
-var statusURL = "http://10.5.5.9/CMD?t=PWD"
-var commandURL = "http://10.5.5.9/CMD?t=PWD&p=%VAL"
+var goProIP = '10.5.5.9'
+
+var previewURL = {
+  path: '/live/amba.m3u8',
+  port: 8080
+}
+
+var statusURL = {
+  path: '/CMD?t=PWD',
+  port: 80
+}
+
+var commandURL = {
+  path: '/CMD?t=PWD&p=%VAL',
+  port: 80
+}
+
+var statusTemplate = {
+  'summary': 'notfound', // one of 'notfound', 'off', 'on', or 'recording'
+  'raw': {}
+}
 
 var _hexToDec = function(val) {
   return parseInt(val, 16);
@@ -181,10 +198,51 @@ var statuses = {
 
 app.get('/status', function(req, res) {
   var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
+  var status = JSON.parse(JSON.stringify(statusTemplate)); // Hacky deep copy
 
   for (cmd in statuses) {
-    url = statusURL.replace('CMD', cmd).replace('PWD', password);
-    res.write(url + '\n');
+    var path = statusURL['path'].replace('CMD', cmd).replace('PWD', password);
+    console.log(statusURL['port'] + '\n' + path);
+
+    var request = http.request({
+      host: goProIP,
+      path: path,
+      port: statusURL['port'],
+      method: 'GET'
+    }, function(response) {
+      console.log('###############################################');
+      var data = [];
+
+      response.on('data', function(chunk) {
+        data.push(chunk); // Append octet stream data to our data
+      }).on('end', function(chunk) {
+        data = data[0]; // the data that comes back is an array itself; we don't want a 2D array
+        status['raw'][cmd] = data; // save raw response
+
+        // loop through different parts that we know how to translate
+        for (item in statuses[cmd]) {
+          var args = statuses[cmd][item];
+          console.log(JSON.stringify(args));
+          var part = data.slice(args['a'], args['b']);
+          console.log(JSON.stringify(part));
+
+          // translate the response value if we know how
+          // if (_.some(args, function(el) {
+          //   console.log(el.name);
+          //   return el.name === 'translate';
+          // })) {
+          //   console.log(typeof args['translate']);
+          // } else {
+          //   console.log("translate not found");
+          // }
+        }
+      }).on('error', function(error) { // something went wrong
+        console.log(error);
+      });
+
+    }).on('error', function(error) {
+      console.log('problem with request: ' + error.message)
+    }).end();
   }
 
   res.end();
@@ -226,6 +284,15 @@ app.get('/:hash.ts', function(request, response) {
   var stream = buffer.segment(request.url);
   response.setHeader('Content-Type', 'video/mp2s');
   stream.pipe(response);
+});
+
+app.use(function (error, req, res, next) {
+  if (!error) {
+    next();
+  } else {
+    console.error(error.stack);
+    res.send(500);
+  }
 });
 
 app.listen(8080);
