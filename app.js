@@ -210,14 +210,13 @@ app.get('/status', function(req, res) {
         method: 'GET'
       }, function(response) {
         console.log('###############################################');
-        console.log(statusURL['path'].replace('CMD', cmd).replace('PWD', password));
         var dataArray = [];
 
         response.on('data', function(chunk) {
           dataArray.push(chunk); // Append octet stream data to our data
         }).on('end', function(chunk) {
+          // Convert and store the data as a hex string
           data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
-          console.log("Data:\t\t\t\t" + data);
           status['raw'][cmd] = data; // save raw response
 
           // loop through different parts that we know how to translate
@@ -225,26 +224,17 @@ app.get('/status', function(req, res) {
             var args = statuses[cmd][item];
             var part = data.slice(args['a'], args['b']);
 
-            console.log("Translate:\t\t\t" + JSON.stringify(args['translate']));
-
             // translate the response value if we know how
             if (typeof args['translate'] == 'function') {
-              console.log("args['translate'](part):\t" + JSON.stringify(args['translate'](part)));
+              console.log(item + ":\t" + JSON.stringify(args['translate'](part)));
               status[item] = args['translate'](part);
             } else if (typeof args['translate'] == 'object') {
-              console.log("args['translate'][part]:\t" + JSON.stringify(args['translate'][part]));
+              console.log(item + ":\t" + JSON.stringify(args['translate'][part]));
               status[item] = args['translate'][part[1]];
             } else {
               status[item] = part;
             }
-
-            console.log("Args:\t\t\t\t" + JSON.stringify(args));
-            console.log("Item:\t\t\t\t" + item);
-            console.log("Part:\t\t\t\t" + JSON.stringify(part));
-            console.log();
           }
-
-          // console.log("Status:\n" + JSON.stringify(status, undefined, 2));
         }).on('error', function(error) { // something went wrong
           console.log(error);
         });
