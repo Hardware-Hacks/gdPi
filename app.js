@@ -4,6 +4,7 @@ var _ = require('underscore');
 var Stream = require('stream');
 var m3u8 = require('m3u8');
 var hls = require('hls-buffer');
+var request = require('request');
 
 var app = express();
 
@@ -200,49 +201,57 @@ app.get('/status', function(req, res) {
   var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
   var status = JSON.parse(JSON.stringify(statusTemplate)); // Hacky deep copy
 
-  for (cmd in statuses) {
-    var path = statusURL['path'].replace('CMD', cmd).replace('PWD', password);
-    console.log(statusURL['port'] + '\n' + path);
+  for (command in statuses) {
+    (function(cmd) {
+      var request = http.request({
+        host: goProIP,
+        path: statusURL['path'].replace('CMD', cmd).replace('PWD', password),
+        port: statusURL['port'],
+        method: 'GET'
+      }, function(response) {
+        console.log('###############################################');
+        console.log(statusURL['path'].replace('CMD', cmd).replace('PWD', password));
+        var dataArray = [];
 
-    var request = http.request({
-      host: goProIP,
-      path: path,
-      port: statusURL['port'],
-      method: 'GET'
-    }, function(response) {
-      console.log('###############################################');
-      var data = [];
+        response.on('data', function(chunk) {
+          dataArray.push(chunk); // Append octet stream data to our data
+        }).on('end', function(chunk) {
+          data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
+          console.log("Data:\t\t\t\t" + data);
+          status['raw'][cmd] = data; // save raw response
 
-      response.on('data', function(chunk) {
-        data.push(chunk); // Append octet stream data to our data
-      }).on('end', function(chunk) {
-        data = data[0]; // the data that comes back is an array itself; we don't want a 2D array
-        status['raw'][cmd] = data; // save raw response
+          // loop through different parts that we know how to translate
+          for (item in statuses[cmd]) {
+            var args = statuses[cmd][item];
+            var part = data.slice(args['a'], args['b']);
 
-        // loop through different parts that we know how to translate
-        for (item in statuses[cmd]) {
-          var args = statuses[cmd][item];
-          console.log(JSON.stringify(args));
-          var part = data.slice(args['a'], args['b']);
-          console.log(JSON.stringify(part));
+            console.log("Translate:\t\t\t" + JSON.stringify(args['translate']));
 
-          // translate the response value if we know how
-          // if (_.some(args, function(el) {
-          //   console.log(el.name);
-          //   return el.name === 'translate';
-          // })) {
-          //   console.log(typeof args['translate']);
-          // } else {
-          //   console.log("translate not found");
-          // }
-        }
-      }).on('error', function(error) { // something went wrong
-        console.log(error);
-      });
+            // translate the response value if we know how
+            if (typeof args['translate'] == 'function') {
+              console.log("args['translate'](part):\t" + JSON.stringify(args['translate'](part)));
+              status[item] = args['translate'](part);
+            } else if (typeof args['translate'] == 'object') {
+              console.log("args['translate'][part]:\t" + JSON.stringify(args['translate'][part]));
+              status[item] = args['translate'][part[1]];
+            } else {
+              status[item] = part;
+            }
 
-    }).on('error', function(error) {
-      console.log('problem with request: ' + error.message)
-    }).end();
+            console.log("Args:\t\t\t\t" + JSON.stringify(args));
+            console.log("Item:\t\t\t\t" + item);
+            console.log("Part:\t\t\t\t" + JSON.stringify(part));
+            console.log();
+          }
+
+          // console.log("Status:\n" + JSON.stringify(status, undefined, 2));
+        }).on('error', function(error) { // something went wrong
+          console.log(error);
+        });
+      }).on('error', function(error) {
+        console.log('problem with request: ' + error.message)
+      }).end();
+    })(command);
   }
 
   res.end();
