@@ -294,7 +294,18 @@ app.use(function (error, req, res, next) {
   }
 });
 
-app.listen(8080);
+app.listen(8080, function() {
+  var request = http.request({
+    host: goProIP,
+    path: statusURL['path'].replace('CMD', 'bacpac/se').replace('PWD', 'goprohero'),
+    port: statusURL['port'],
+    method: 'GET'
+  }, function(response) {
+    console.log('whatever');
+  }).on('error', function(error) { // something went wrong
+    console.log(error);
+  });
+});
 
 // Turn on camera : http://<ip>/bacpac/PW?t=<password>&p=%01
 // Turn off camera : http://<ip>/bacpac/PW?t=<password>&p=%00
