@@ -60,8 +60,8 @@ var statuses = {
       'a': 18,
       'b': 20,
       'translate': {
-        '00': 'off',
-        '01': 'on'
+        '00': false,
+        '01': true
       }
     }
   },
@@ -124,7 +124,7 @@ var statuses = {
         '4': 'yes'
       }
     },
-    'mem': { // i really have no idea what this is
+    'memoryLeft': { // i really have no idea what this is
       'a': 42,
       'b': 46,
       'translate': _hexToDec
@@ -144,12 +144,12 @@ var statuses = {
       'b': 58,
       'translate': _hexToDec
     },
-    'record': {
+    'recording': {
       'a': 60,
       'b': 62,
       'translate': {
-        '05': 'on',
-        '04': 'off'
+        '05': true,
+        '04': false
       }
     },
     'batt2': {
