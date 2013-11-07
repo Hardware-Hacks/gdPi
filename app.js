@@ -226,15 +226,15 @@ app.get('/status', function(req, res) {
 
             // translate the response value if we know how
             if (typeof args['translate'] == 'function') {
-              console.log(item + ":\t" + JSON.stringify(args['translate'](part)));
               status[item] = args['translate'](part);
             } else if (typeof args['translate'] == 'object') {
-              console.log(item + ":\t" + JSON.stringify(args['translate'][part]));
-              status[item] = args['translate'][part[1]];
+              status[item] = args['translate'][part];
             } else {
               status[item] = part;
             }
           }
+
+          console.log(JSON.stringify(status, undefined, 2));
         }).on('error', function(error) { // something went wrong
           console.log(error);
         });
