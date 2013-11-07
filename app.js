@@ -26,11 +26,6 @@ var commandURL = {
   port: 80
 }
 
-var statusTemplate = {
-  'summary': 'notfound', // one of 'notfound', 'off', 'on', or 'recording'
-  'raw': {}
-}
-
 var _hexToDec = function(val) {
   return parseInt(val, 16);
 }
@@ -199,7 +194,7 @@ var statuses = {
 
 app.get('/status', function(req, res) {
   var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
-  var status = JSON.parse(JSON.stringify(statusTemplate)); // Hacky deep copy
+  var status = {};
 
   for (command in statuses) {
     (function(cmd) {
@@ -217,7 +212,6 @@ app.get('/status', function(req, res) {
         }).on('end', function(chunk) {
           // Convert and store the data as a hex string
           data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
-          status['raw'][cmd] = data; // save raw response
 
           // loop through different parts that we know how to translate
           for (item in statuses[cmd]) {
