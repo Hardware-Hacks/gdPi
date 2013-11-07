@@ -258,7 +258,6 @@ app.get('/power/:onoff', function(req, res) {
     res.end();
   }).on('error', function(error) {
     console.log('problem with request: ' + error.message)
-    finished();
   }).end();
 
 });
