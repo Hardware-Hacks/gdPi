@@ -10,6 +10,7 @@ var app = express();
 
 // Credit: https://github.com/joshvillbrandt/GoProController/
 var goProIP = '10.5.5.9'
+var status = {};
 
 var previewURL = {
   path: '/live/amba.m3u8',
@@ -194,7 +195,6 @@ var statuses = {
 
 app.get('/status', function(req, res) {
   var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
-  var status = {};
 
   for (command in statuses) {
     (function(cmd) {
@@ -244,6 +244,23 @@ app.get('/status', function(req, res) {
     res.jsonp(JSON.stringify(status));
     res.end();
   });
+});
+
+app.get('/power/:onoff', function(req, res) {
+  var password = req.query.password;
+
+  var request = http.request({
+    host: goProIP,
+    path: commandURL['path'].replace('CMD', commands['power']['cmd']).replace('PWD', password).replace('VAL', commands['power']['values'][req.params.onoff]),
+    port: commandURL['port'],
+    method: 'GET'
+  }, function() {
+    res.end();
+  }).on('error', function(error) {
+    console.log('problem with request: ' + error.message)
+    finished();
+  }).end();
+
 });
 
 app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
