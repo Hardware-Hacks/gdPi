@@ -241,8 +241,7 @@ app.get('/status', function(req, res) {
 
   // After all 3 requests complete (successfully or not), return what we have.
   var finished = _.after(3, function() {
-    res.writeHead(200, {'Content-Type': 'application/json'});
-    res.write(JSON.stringify(status));
+    res.jsonp(JSON.stringify(status));
     res.end();
   });
 });
