@@ -204,14 +204,13 @@ app.get('/status', function(req, res) {
         port: statusURL['port'],
         method: 'GET'
       }, function(response) {
-        console.log('###############################################');
         var dataArray = [];
 
         response.on('data', function(chunk) {
           dataArray.push(chunk); // Append octet stream data to our data
         }).on('end', function(chunk) {
           // Convert and store the data as a hex string
-          data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
+          var data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
 
           // loop through different parts that we know how to translate
           for (item in statuses[cmd]) {
@@ -228,17 +227,23 @@ app.get('/status', function(req, res) {
             }
           }
 
-          console.log(JSON.stringify(status, undefined, 2));
+          finished();
         }).on('error', function(error) { // something went wrong
           console.log(error);
+          finished();
         });
       }).on('error', function(error) {
         console.log('problem with request: ' + error.message)
+          finished();
       }).end();
     })(command);
   }
 
-  res.end();
+  var finished = _.after(3, function() {
+    res.writeHead(200, {'Content-Type': 'application/json'});
+    res.write(JSON.stringify(status));
+    res.end();
+  });
 });
 
 app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
