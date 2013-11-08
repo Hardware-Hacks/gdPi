@@ -8,9 +8,18 @@ var request = require('request');
 
 var app = express();
 
+Object.size = function(obj) {
+  var size = 0, key;
+  for (key in obj) {
+    if (obj.hasOwnProperty(key)) size++;
+
+  }
+
+  return size;
+};
+
 // Credit: https://github.com/joshvillbrandt/GoProController/
 var goProIP = '10.5.5.9'
-var status = {};
 
 var previewURL = {
   path: '/live/amba.m3u8',
@@ -194,7 +203,8 @@ var statuses = {
 }
 
 var getStatus = function(password, callback) {
-  callback = _.after(3, callback);
+  callback = _.after(Object.size(statuses), callback);
+  var status = {};
 
   for (command in statuses) {
     (function(cmd) {
@@ -227,21 +237,21 @@ var getStatus = function(password, callback) {
             }
           }
 
-          callback();
+          callback(status);
         }).on('error', function(error) { // something went wrong
           console.log(error);
-          callback();
+          callback(status);
         });
       }).on('error', function(error) {
         console.log('problem with request: ' + error.message)
-          callback();
+          callback(status);
       }).end();
     })(command);
   }
 }
 
 app.get('/status', function(req, res) {
-  getStatus(req.query.password, function() {
+  getStatus(req.query.password, function(status) {
     res.jsonp(JSON.stringify(status));
     res.end();
   });
@@ -255,8 +265,11 @@ app.get('/power/:onoff', function(req, res) {
     path: commandURL['path'].replace('CMD', commands['power']['cmd']).replace('PWD', password).replace('VAL', commands['power']['values'][req.params.onoff]),
     port: commandURL['port'],
     method: 'GET'
-  }, function() {
-    res.end();
+  }, function(response) {
+    getStatus(req.query.password, function(status) {
+      res.jsonp(JSON.stringify(status));
+      res.end();
+    })
   }).on('error', function(error) {
     console.log('problem with request: ' + error.message)
   }).end();
