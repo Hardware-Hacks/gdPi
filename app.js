@@ -257,22 +257,27 @@ app.get('/status', function(req, res) {
   });
 });
 
-app.get('/power/:onoff', function(req, res) {
-  var request = http.request({
-    host: goProIP,
-    path: commandURL['path'].replace('CMD', commands['power']['cmd']).replace('PWD', req.query.password).replace('VAL', commands['power']['values'][req.params.onoff]),
-    port: commandURL['port'],
-    method: 'GET'
-  }, function(response) {
-    setTimeout(function() {
-      getStatus(req.query.password, function(status) {
-        res.jsonp(JSON.stringify(status));
-        res.end();
-      });
-    }, 2500); // The GoPro doesn't update its status right away. We need to be patient.
-  }).on('error', function(error) {
-    console.log('problem with request: ' + error.message)
-  }).end();
+app.get('/:command/:value', function(req, res) {
+  if (_.has(commands, req.params.command) && _.has(commands[req.params.command]['values'], req.params.value)) {
+    var request = http.request({
+      host: goProIP,
+      path: commandURL['path'].replace('CMD', commands[req.params.command]['cmd']).replace('PWD', req.query.password).replace('VAL', commands[req.params.command]['values'][req.params.value]),
+      port: commandURL['port'],
+      method: 'GET'
+    }, function(response) {
+      setTimeout(function() {
+        getStatus(req.query.password, function(status) {
+          res.jsonp(JSON.stringify(status));
+          res.end();
+        });
+      }, 2500); // The GoPro doesn't update its status right away. We need to be patient.
+    }).on('error', function(error) {
+      console.log('problem with request: ' + error.message)
+    }).end();
+  } else {
+    res.status(404).send('Not found.');
+    res.end();
+  }
 });
 
 app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
