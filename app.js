@@ -258,22 +258,21 @@ app.get('/status', function(req, res) {
 });
 
 app.get('/power/:onoff', function(req, res) {
-  var password = req.query.password;
-
   var request = http.request({
     host: goProIP,
-    path: commandURL['path'].replace('CMD', commands['power']['cmd']).replace('PWD', password).replace('VAL', commands['power']['values'][req.params.onoff]),
+    path: commandURL['path'].replace('CMD', commands['power']['cmd']).replace('PWD', req.query.password).replace('VAL', commands['power']['values'][req.params.onoff]),
     port: commandURL['port'],
     method: 'GET'
   }, function(response) {
-    getStatus(req.query.password, function(status) {
-      res.jsonp(JSON.stringify(status));
-      res.end();
-    })
+    setTimeout(function() {
+      getStatus(req.query.password, function(status) {
+        res.jsonp(JSON.stringify(status));
+        res.end();
+      });
+    }, 2500); // The GoPro doesn't update its status right away. We need to be patient.
   }).on('error', function(error) {
     console.log('problem with request: ' + error.message)
   }).end();
-
 });
 
 app.get('/:ip/:password/:action/:actionNumber', function(req, response) {
