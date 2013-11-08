@@ -40,6 +40,11 @@ var _hexToDec = function(val) {
   return parseInt(val, 16);
 }
 
+// Convert the GoPro's estimated remaining photos to memory left
+var _picsToMem = function(val) { // Picz II Men
+  return _hexToDec(val) * 6847116.72194287;
+}
+
 var commands = {
   'power': {
     'cmd': 'bacpac/PW',
@@ -137,10 +142,10 @@ var statuses = {
         '4': 'yes'
       }
     },
-    'memoryLeft': { // i really have no idea what this is
+    'memoryLeft': { // Estimated photos left. Returned as actual memory remaining.
       'a': 42,
       'b': 46,
-      'translate': _hexToDec
+      'translate': _picsToMem
     },
     'npics': {
       'a': 46,
