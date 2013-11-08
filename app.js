@@ -43,6 +43,7 @@ var _hexToDec = function(val) {
 var commands = {
   'power': {
     'cmd': 'bacpac/PW',
+    'wait': 2500,
     'values': {
       true: '01',
       false: '00'
@@ -50,6 +51,7 @@ var commands = {
   },
   'record': {
     'cmd': 'camera/SH',
+    'wait': 0,
     'values': {
       true: '01',
       false: '00'
@@ -57,6 +59,7 @@ var commands = {
   },
   'mode': {
     'cmd': 'camera/CM',
+    'wait': 0,
     'values': {
       'video': '00',
       'still': '01'
@@ -270,7 +273,7 @@ app.get('/:command/:value', function(req, res) {
           res.jsonp(JSON.stringify(status));
           res.end();
         });
-      }, 2500); // The GoPro doesn't update its status right away. We need to be patient.
+      }, commands[req.params.command]['wait']); // The GoPro doesn't update its status right away. We need to be patient.
     }).on('error', function(error) {
       console.log('problem with request: ' + error.message)
     }).end();
