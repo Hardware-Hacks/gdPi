@@ -193,8 +193,8 @@ var statuses = {
   }
 }
 
-app.get('/status', function(req, res) {
-  var password = req.query.password; // Later, replace with a stored password so we don't have to transmit it with each request
+var getStatus = function(password, callback) {
+  callback = _.after(3, callback);
 
   for (command in statuses) {
     (function(cmd) {
@@ -227,20 +227,21 @@ app.get('/status', function(req, res) {
             }
           }
 
-          finished();
+          callback();
         }).on('error', function(error) { // something went wrong
           console.log(error);
-          finished();
+          callback();
         });
       }).on('error', function(error) {
         console.log('problem with request: ' + error.message)
-          finished();
+          callback();
       }).end();
     })(command);
   }
+}
 
-  // After all 3 requests complete (successfully or not), return what we have.
-  var finished = _.after(3, function() {
+app.get('/status', function(req, res) {
+  getStatus(req.query.password, function() {
     res.jsonp(JSON.stringify(status));
     res.end();
   });
