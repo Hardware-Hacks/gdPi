@@ -46,6 +46,7 @@ var _picsToMem = function(val) { // Picz II Men
 }
 
 var commands = {
+  // Josh Villbrandt's findings
   'power': {
     'cmd': 'bacpac/PW',
     'wait': 2500,
@@ -62,12 +63,154 @@ var commands = {
       false: '00'
     }
   },
+
+  // undocumented anywhere
+  1: {
+    'cmd': 'bacpac/SH',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  2: {
+    'cmd': 'bacpac/cv',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  3: {
+    'cmd': 'bacpac/sd',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  4: {
+    'cmd': 'camera/FS',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  5: {
+    'cmd': 'camera/TM',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  6: {
+    'cmd': 'camera/VV',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  7: {
+    'cmd': 'camera/cc',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+  8: {
+    'cmd': 'camera/cv',
+    'wait': 0,
+    'values': {
+
+    }
+  },
+
+  // Commands and values from http://goprouser.freeforums.org/howto-livestream-to-pc-and-view-files-on-pc-smartphone-t9393-150.html
+  'preview': {
+    'cmd': 'camera/PV',
+    'wait': 0,
+    'values': {
+      true: '02',
+      false: '00'
+    }
+  },
   'mode': {
     'cmd': 'camera/CM',
     'wait': 0,
     'values': {
       'video': '00',
-      'still': '01'
+      'photo': '01',
+      'burst': '02',
+      'timelapse': '03',
+      'timelapse1': '04',
+    }
+  },
+  'orientation': {
+    'cmd': 'camera/UP',
+    'wait': 0,
+    'values': {
+      'up': '00',
+      'down': '01'
+    }
+  },
+  'vidres': {
+    'cmd': 'camera/VR',
+    'wait': 0,
+    'values': {
+      'WVGA-60': '00',
+      'WVGA-120': '01',
+      '720-30': '02',
+      '720-60': '03',
+      '960-30': '04',
+      '960-60': '05',
+      '1080-30': '06'
+      // Perhaps there are more for later models, or perhaps these are all wrong.
+    }
+  },
+  'fov': { // Field of view
+    'cmd': 'camera/FV',
+    'wait': 0,
+    'values': {
+      'wide': '00',
+      'medium': '01',
+      'narrow': '02'
+    }
+  },
+  'picres': {
+    'cmd': 'camera/PR',
+    'wait': 0,
+    'values': {
+      '11mp-wide': '00',
+      '8mp-medium': '01',
+      '5mp-wide': '02',
+      '5mp-medium': '03',
+    }
+  },
+  'timer': {
+    'cmd': 'camera/TI',
+    'wait': 0,
+    'values': { // seconds
+      0.5: '00',
+      1: '01',
+      2: '02',
+      5: '03',
+      10: '04',
+      30: '05',
+      60: '06'
+    }
+  },
+  'l10n': { // localization
+    'cmd': 'camera/LL',
+    'wait': 0,
+    'values': {
+      true: '01',
+      false: '00'
+    }
+  },
+  'bipvol': { // bip volume
+    'cmd': 'camera/BS',
+    'wait': 0,
+    'values': { // percent
+      0: '00',
+      70: '01',
+      100: '02',
     }
   }
 }
@@ -229,6 +372,7 @@ var getStatus = function(password, callback) {
         }).on('end', function(chunk) {
           // Convert and store the data as a hex string
           var data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
+          console.log(data);
 
           // loop through different parts that we know how to translate
           for (item in statuses[cmd]) {
@@ -252,7 +396,7 @@ var getStatus = function(password, callback) {
         });
       }).on('error', function(error) {
         console.log('problem with request: ' + error.message)
-          callback(status);
+        callback(status);
       }).end();
     })(command);
   }
