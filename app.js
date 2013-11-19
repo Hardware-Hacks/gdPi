@@ -355,52 +355,67 @@ var statuses = {
 }
 
 var getStatus = function(password, callback) {
-  callback = _.after(Object.size(statuses), callback);
   var status = {};
 
+  var urls = [];
+  var commands = [];
+
+  // Construct an array of URL objects to pass to multiple requests
   for (command in statuses) {
-    (function(cmd) {
-      var request = http.request({
-        host: goProIP,
-        path: statusURL['path'].replace('CMD', cmd).replace('PWD', password),
-        port: statusURL['port'],
-        method: 'GET'
-      }, function(response) {
-        var dataArray = [];
+    urls.push({
+      host: goProIP,
+      path: statusURL['path'].replace('CMD', command).replace('PWD', password),
+      port: statusURL['port'],
+      method: 'GET'
+    });
 
-        response.on('data', function(chunk) {
-          dataArray.push(chunk); // Append octet stream data to our data
-        }).on('end', function(chunk) {
-          // Convert and store the data as a hex string
-          var data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
-          console.log(data);
-
-          // loop through different parts that we know how to translate
-          for (item in statuses[cmd]) {
-            var args = statuses[cmd][item];
-            var part = data.slice(args['a'], args['b']);
-
-            // translate the response value if we know how
-            if (typeof args['translate'] == 'function') {
-              status[item] = args['translate'](part);
-            } else if (typeof args['translate'] == 'object') {
-              status[item] = args['translate'][part];
-            } else {
-              status[item] = part;
-            }
-          }
-
-          callback(status);
-        }).on('error', function(error) { // something went wrong
-          console.log(error);
-          callback(status);
-        });
-      }).on('error', function(error) {
-        console.log('problem with request: ' + error.message)
-        callback(status);
-      }).end();
-    })(command);
+    commands.push(command);
   }
+
+  // Synchronously iterate asychronous requests via a recursive function
+  var getPart = function(urls, commands) {
+    url = urls.shift();
+    cmd = commands.shift();
+
+    var request = http.request(url, function(response) {
+      var dataArray = [];
+
+      response.on('data', function(chunk) {
+        dataArray.push(chunk); // Append octet stream data to our data
+      }).on('end', function(chunk) {
+        // Convert and store the data as a hex string
+        var data = (new Buffer(dataArray[0])).toString('hex'); // the data that comes back is an array itself; we don't want a 2D array
+        console.log(data);
+
+        // loop through different parts that we know how to translate
+        for (item in statuses[cmd]) {
+          var args = statuses[cmd][item];
+          var part = data.slice(args['a'], args['b']);
+
+          // translate the response value if we know how
+          if (typeof args['translate'] == 'function') {
+            status[item] = args['translate'](part);
+          } else if (typeof args['translate'] == 'object') {
+            status[item] = args['translate'][part];
+          } else {
+            status[item] = part;
+          }
+        }
+
+        if (urls.length) {
+          getPart(urls, commands);
+        } else {
+          callback(status);
+        }
+      }).on('error', function(error) { // something went wrong
+        console.log(error);
+      });
+    }).on('error', function(error) {
+      console.log('problem with request: ' + error.message)
+    }).end();
+  }
+
+  getPart(urls, commands);
 }
 
 app.get('/status', function(req, res) {
