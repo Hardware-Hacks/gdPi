@@ -49,7 +49,7 @@ var commands = {
   // Josh Villbrandt's findings
   'power': {
     'cmd': 'bacpac/PW',
-    'wait': 2500,
+    'wait': 3500,
     'values': {
       true: '01',
       false: '00'
