@@ -138,8 +138,8 @@ var commands = {
       'video': '00',
       'photo': '01',
       'burst': '02',
-      'timelapse': '03',
-      'timelapse1': '04',
+      'timer': '03',
+      'settings': '07'
     }
   },
   'orientation': {
@@ -215,6 +215,7 @@ var commands = {
   }
 }
 
+// Missing: timer, l10n, bipvol
 var statuses = {
   'bacpac/se': {
     'power': {
