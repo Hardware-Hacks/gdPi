@@ -490,7 +490,7 @@ app.listen(8080, function() {
     console.log('whatever');
   }).on('error', function(error) { // something went wrong
     console.log(error);
-  });
+  }).end();
 });
 
 // Turn on camera : http://<ip>/bacpac/PW?t=<password>&p=%01
