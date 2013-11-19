@@ -240,7 +240,7 @@ var statuses = {
       'b': 4,
       'translate': {
         '00': 'video',
-        '01': 'still',
+        '01': 'photo',
         '02': 'burst',
         '03': 'timer',
         '07': 'settings'
