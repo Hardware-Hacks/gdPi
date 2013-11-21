@@ -100,13 +100,6 @@ var commands = {
 
     }
   },
-  6: {
-    'cmd': 'camera/VV',
-    'wait': 0,
-    'values': {
-
-    }
-  },
   7: {
     'cmd': 'camera/cc',
     'wait': 0,
@@ -151,17 +144,18 @@ var commands = {
     }
   },
   'vidres': {
-    'cmd': 'camera/VR',
+    'cmd': 'camera/VV',
     'wait': 0,
     'values': {
-      'WVGA-60': '00',
-      'WVGA-120': '01',
-      '720-30': '02',
-      '720-60': '03',
-      '960-30': '04',
-      '960-60': '05',
-      '1080-30': '06'
-      // Perhaps there are more for later models, or perhaps these are all wrong.
+        'WVGA': '00',
+        '720p': '01',
+        '960p': '02',
+        '1080p': '03',
+        '1440p': '04',
+        '2.7K': '05',
+        '2.7KCin': '06',
+        '4K': '07',
+        '4KCin': '08'
     }
   },
   'fov': { // Field of view
