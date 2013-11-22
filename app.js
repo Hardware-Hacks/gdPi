@@ -132,15 +132,15 @@ var commands = {
     'cmd': 'camera/VV',
     'wait': 0,
     'values': {
-        'WVGA': '00',
-        '720p': '01',
-        '960p': '02',
-        '1080p': '03',
-        '1440p': '04',
-        '2.7K': '05',
-        '2.7KCin': '06',
-        '4K': '07',
-        '4KCin': '08'
+      'WVGA': '00',
+      '720p': '01',
+      '960p': '02',
+      '1080p': '03',
+      '1440p': '04',
+      '2.7K': '05',
+      '2.7KCin': '06',
+      '4K': '07',
+      '4KCin': '08'
     }
   },
   'fov': { // Field of view - doesn't work on Hero 3+
@@ -194,8 +194,7 @@ var commands = {
   }
 }
 
-// Missing: timer, l10n, bipvol
-// timer does not change anything in the bits that come back, so we need new routes.
+// Missing: l10n, bipvol
 var statuses = {
   'bacpac/se': {
     'power': {
@@ -224,6 +223,19 @@ var statuses = {
         '02': 'burst',
         '03': 'timer',
         '07': 'settings'
+      }
+    },
+    'timer': {
+      'a': 10,
+      'b': 12,
+      'translate': {
+        '00': '0.5', // the exception to the rule
+        '01': '1',
+        '02': '2',
+        '05': '5',
+        '0a': '10',
+        '1e': '30',
+        '3c': '60'
       }
     },
     'fov': {
