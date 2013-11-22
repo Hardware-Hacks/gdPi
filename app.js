@@ -228,7 +228,7 @@ var commands = {
         '4KCin': '08'
     }
   },
-  'fov': { // Field of view
+  'fov': { // Field of view - doesn't work on Hero 3+
     'cmd': 'camera/FV',
     'wait': 0,
     'values': {
@@ -237,7 +237,7 @@ var commands = {
       'narrow': '02'
     }
   },
-  'picres': {
+  'picres': { // doesn't work on Hero 3+
     'cmd': 'camera/PR',
     'wait': 0,
     'values': {
@@ -250,14 +250,14 @@ var commands = {
   'timer': {
     'cmd': 'camera/TI',
     'wait': 0,
-    'values': { // seconds
-      0.5: '00',
-      1: '01',
-      2: '02',
-      5: '03',
-      10: '04',
-      30: '05',
-      60: '06'
+    'values': { // 'seconds': 'seconds as hex'
+      '0.5': '00', // the exception to the rule
+      '1': '01',
+      '2': '02',
+      '5': '05',
+      '10': '0a',
+      '30': '1e',
+      '60': '3c'
     }
   },
   'l10n': { // localization
@@ -280,6 +280,7 @@ var commands = {
 }
 
 // Missing: timer, l10n, bipvol
+// timer does not change anything in the bits that come back, so we need new routes.
 var statuses = {
   'bacpac/se': {
     'power': {
