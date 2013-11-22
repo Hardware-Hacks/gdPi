@@ -175,7 +175,7 @@ var commands = {
       '60': '3c'
     }
   },
-  'l10n': { // localization
+  'locate': {
     'cmd': 'camera/LL',
     'wait': 0,
     'values': {
@@ -194,7 +194,7 @@ var commands = {
   }
 }
 
-// Missing: l10n, bipvol
+// Missing: bipvol
 var statuses = {
   'bacpac/se': {
     'power': {
@@ -261,6 +261,14 @@ var statuses = {
       'a': 26,
       'b': 30,
       'translate': _hexToDec
+    },
+    'locating': {
+      'a': 36,
+      'b': 37,
+      'translate': {
+        '9': false,
+        'd': true
+      }
     },
     'orientation': {
       'a': 37,
