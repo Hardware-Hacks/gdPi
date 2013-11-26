@@ -194,7 +194,6 @@ var commands = {
   }
 }
 
-// Missing: bipvol
 var statuses = {
   'bacpac/se': {
     'power': {
@@ -349,6 +348,15 @@ var statuses = {
         '08': '100',
         '09': '120',
         '10': '240'
+      }
+    },
+    'bipvol': {
+      'a': 32,
+      'b': 34,
+      'translate': { // percent
+        '00': '0',
+        '01': '70',
+        '02': '100',
       }
     }
   },
