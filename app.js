@@ -64,42 +64,6 @@ var commands = {
     }
   },
 
-  // undocumented anywhere
-  4: {
-    'cmd': 'camera/FS',
-    'wait': 0,
-    'values': {
-      '00': '00',
-      '01': '01',
-      '02': '02',
-      '03': '03',
-      '04': '04',
-      '05': '05',
-      '06': '06',
-      '07': '07',
-      '08': '08',
-      '09': '09',
-      '10': '0a',
-    }
-  },
-  5: {
-    'cmd': 'camera/TM',
-    'wait': 0,
-    'values': {
-      '00': '00',
-      '01': '01',
-      '02': '02',
-      '03': '03',
-      '04': '04',
-      '05': '05',
-      '06': '06',
-      '07': '07',
-      '08': '08',
-      '09': '09',
-      '10': '0a',
-    }
-  },
-
   // Commands and values from http://goprouser.freeforums.org/howto-livestream-to-pc-and-view-files-on-pc-smartphone-t9393-150.html
   'preview': {
     'cmd': 'camera/PV',
@@ -359,13 +323,7 @@ var statuses = {
         '02': '100',
       }
     }
-  },
-
-  // undocumented
-  'bacpac/cv': {},
-  'bacpac/sd': {},
-  'camera/cc': {},
-  'camera/cv': {}
+  }
 }
 
 var getStatus = function(password, callback) {
