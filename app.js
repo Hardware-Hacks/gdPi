@@ -273,7 +273,7 @@ var statuses = {
       'a': 60,
       'b': 62,
       'translate': {
-        '05': true,
+        '01': true,
         '04': false
       }
     },
