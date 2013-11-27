@@ -454,8 +454,12 @@ app.get('/index.m3u8', function(request, response) {
 app.get('/:hash.ts', function(request, response) {
   // return the linked segment
   var stream = buffer.segment(request.url);
-  response.setHeader('Content-Type', 'video/mp2s');
-  stream.pipe(response);
+  if (stream) {
+    response.setHeader('Content-Type', 'video/mp2s');
+    stream.pipe(response);
+  } else {
+    response.end();
+  }
 });
 
 app.use(function (error, req, res, next) {
