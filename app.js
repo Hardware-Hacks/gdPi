@@ -274,7 +274,8 @@ var statuses = {
       'b': 62,
       'translate': {
         '01': true,
-        '04': false
+        '04': false,
+        '05': true // sometimes this happens?
       }
     },
     'batt2': {
