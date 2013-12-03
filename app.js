@@ -245,8 +245,8 @@ var statuses = {
       'a': 39,
       'b': 40,
       'translate': {
-        '3': 'no',
-        '4': 'yes'
+        '3': false,
+        '4': true
       }
     },
     'memoryLeft': { // Estimated photos left. Returned as actual memory remaining.
