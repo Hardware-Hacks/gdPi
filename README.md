@@ -25,63 +25,68 @@ Above, `:command` corresponds to a command, `:parameter` is its parameter, and `
 
 #### Commands
 
-**`power`**: Turn the GoPro on or off.  
-parameter: boolean  
+**`power`** (type: boolean) Turn the GoPro on or off.  
 `true`: turns the GoPro on  
 `false`: turns it off  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
+**`record`** (type: boolean) Start or stop recording.  
 `true`: start recording  
 `false`: stop recording
 
-**`preview`**: We're not quite sure. It doesn't enable or disable the preview.  
-parameter: boolean  
+**`preview`** (type: boolean) We're not quite sure what this does. It doesn't enable or disable the preview.  
 `true`: ?  
 `false`: ?
 
-**`mode`**: Change the GoPro's mode.  
-parameter: string  
-`video`: Change to video mode  
-`photo`: Change to photo mode  
-`burst`: Change to burst mode  
-`timer`: Change to timer mode  
-`settings`: Change to settings mode  
+**`mode`** (type: string) Change the GoPro's mode.  
+`video`  
+`photo`  
+`burst`  
+`timer`  
+`settings`  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`orientation`** (type: string) Change the orientation of the picture.  
+`up`: right side up  
+`down`: upside down  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`vidres`** (type: string) Change the recorded video resolution.  
+`WVGA`  
+`720p`  
+`960p`  
+`1080p`  
+`1440p`  
+`2.7K`  
+`2.7KCin`: 2.7K Cinematic  
+`4K`  
+`4KCin`: 4K Cinematic 
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`fov`** (type: string) Change the field of view. Doesn't work on GoPro Hero 3+.  
+`wide`  
+`medium`  
+`narrow`  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`picres`** (type: string) Change the still photo resolution.  
+`11mp-wide`  
+`8mp-medium`  
+`5mp-wide`  
+`5mp-medium`  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`timer`** (type: float) Change the timer length in seconds.  
+`0.5`  
+`1`  
+`2`  
+`5`  
+`10`  
+`30`  
+`60`  
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`locate`** (type: boolean) Beep incessantly in order to find a GoPro.  
+`true`: start beeping  
+`false`: stop beeping
 
-**`record`**: Start or stop recording.  
-parameter: boolean  
-`true`: start recording  
-`false`: stop recording
+**`bipvol`** (type: integer) Change the volume of the GoPro's beep in percentage.  
+`0`  
+`70`  
+`100`  
 
 #### Status
 
