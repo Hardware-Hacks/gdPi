@@ -17,13 +17,17 @@ First, [set up a Raspberry Pi with two Wi-Fi adapters](http://www.processthings.
 
 ### The API
 
-Using the API, you can either grab the status of the GoPro in `jsonp`, or send commands to it. Sending commands will also return the full status of the GoPro. Whatever you decide to do, you must authenticate using the GoPro's password in the `password` HTTP parameter. By default, the server runs on port 8080. The format of a command request is this:
+Using the API, you can either grab the status of the GoPro in `jsonp`, or send commands to it. Sending commands will also return the full status of the GoPro. Whatever you decide to do, you must authenticate using the GoPro's password in the `password` HTTP parameter. By default, the server runs on port 8080.
+
+#### Commands
+
+The format of a command request is this:
 
     http://192.168.1.3:8080/:command/:parameter?password=:password
     
-Above, `:command` corresponds to a command, `:parameter` is its parameter, and `:password` is the GoPro's password. Pretty simple stuff.
+`:command` corresponds to a command, `:parameter` is its parameter, and `:password` is the GoPro's password. Pretty simple stuff.
 
-#### Commands
+Below is a list of all the commands and their possible parameter values. Anything not listed below will result in a 404. As of now, an unauthenticated request just returns an empty status object in `jsonp`. Some of the parameters have explanations, and the others should be self-explanatory.
 
 **`power`** (type: boolean) Turn the GoPro on or off.  
 `true`: turns the GoPro on  
