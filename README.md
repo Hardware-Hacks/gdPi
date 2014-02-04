@@ -98,7 +98,7 @@ In order to grab the status of the GoPro, send a request to gdPi at `/status`, i
 
     {"status": "value", "status": "value", ...}
 
-where `status` is the name of a piece of information, and `value` is its value. Again, it's all pretty straightforward. For the most part, statuses and values match the commands and parameters that set them. The few exceptions and additions are listed below. Some can only possibly have certain predefined values, and those are included.
+where `status` is the name of a piece of information, and `value` is its value. Again, it's all pretty straightforward. For the most part, statuses and values match the commands and parameters that set them. The few exceptions and additions are listed below. Some can only possibly have certain predefined values, and those are included. Only string values will be surrounded by quotes; other types will not.
 
 **`batt1`** (type: integer) Battery's remaining charge in percent  
 
