@@ -94,4 +94,54 @@ Below is a list of all the commands and their possible parameter values. Anythin
 
 #### Status
 
+In order to grab the status of the GoPro, send a request to gdPi at `/status`, including the password parameter, or send a command, which will return the status in the response body. Status is always returned in a `jsonp` block. The JSON inside of it will look like this:
+
+    {"status": "value", "status": "value", ...}
+
+where `status` is the name of a piece of information, and `value` is its value. Again, it's all pretty straightforward. For the most part, statuses and values match the commands and parameters that set them. The few exceptions and additions are listed below. Some can only possibly have certain predefined values, and those are included.
+
+**`batt1`** (type: integer) Battery's remaining charge in percent  
+
+**`batt2`** (type: integer) Battery attachment's remaining charge in percent  
+
+**`fov`** (type: string) Field of view  
+`'170'`  
+`'127'`  
+`'90'`  
+
+**`picres`** (type: string) Resolution of still photos  
+`5MP med`  
+`7MP med`  
+`7MP wide`  
+`12MP wide`  
+
+**`secselapsed`** (type: integer) TODO  
+
+**`locating`** (type: boolean) Whether the GoPro is beeping  
+
+**`charging`** (type: boolean) Whether the GoPro is charging  
+
+**`memoryLeft`** (type: float) An estimate of how much memory is left in GB on the GoPro's SD card. This value is based on the GoPro's internal estimate of pictures remaining.  
+
+**`npics`** (type: integer) How many pictures are stored on the GoPro's SD card  
+
+**`minsremaining`** (type: integer) An estimate of how many minutes of video you can shoot with the current settings, based on how much space is left on the GoPro's SD card  
+
+**`nvids`** (type: integer) How many videos are stored on the GoPro's SD card  
+
+**`recording`** (type: boolean) Whether the GoPro is recording  
+
+**`fps`** (type: string) Frames per second of video  
+`'12'`  
+`'15'`  
+`'24'`  
+`'25'`  
+`'30'`  
+`'48'`  
+`'50'`  
+`'60'`  
+`'100'`  
+`'120'`  
+`'240'`  
+
 [goDog]: https://github.com/FrontRush/goDog
