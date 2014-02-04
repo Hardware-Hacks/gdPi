@@ -115,7 +115,7 @@ where `status` is the name of a piece of information, and `value` is its value. 
 `7MP wide`  
 `12MP wide`  
 
-**`secselapsed`** (type: integer) TODO  
+**`secselapsed`** (type: integer) While recording, how many seconds have been recorded this time  
 
 **`locating`** (type: boolean) Whether the GoPro is beeping  
 
