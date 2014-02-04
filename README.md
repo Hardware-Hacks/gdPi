@@ -144,4 +144,8 @@ where `status` is the name of a piece of information, and `value` is its value. 
 `'120'`  
 `'240'`  
 
+## Credits
+
+Special thanks to [Josh Villbrandt](https://github.com/joshvillbrandt/GoProController/) and the folks at the [GoPro User Forums](http://goprouser.freeforums.org/howto-livestream-to-pc-and-view-files-on-pc-smartphone-t9393-150.html) for their hard work in reverse engineering the GoPro API. Thanks to GoPro for making such a great little camera.
+
 [goDog]: https://github.com/FrontRush/goDog
