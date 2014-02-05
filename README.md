@@ -2,7 +2,7 @@
 
 ## What the heck *is* this thing?
 
-gdPi is an intermediate Node.js server made for Raspberry Pi for handling communication between a GoPro Hero 3+ and a desktop computer running the [goDog] web interface. The GoPro's API is undocumented and obscure, so we opened it up, using the hard work of other open source APIs, as well as some original reverse engineering.
+gdPi is an intermediate Node.js/Express server made for Raspberry Pi for handling communication between a GoPro Hero 3+ and a desktop computer running the [goDog] web interface. The GoPro's API is undocumented and obscure, so we opened it up, using the hard work of other open source APIs, as well as some original reverse engineering.
 
 ## What you get
 
