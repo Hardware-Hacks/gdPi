@@ -105,15 +105,15 @@ where `status` is the name of a piece of information, and `value` is its value. 
 **`batt2`** (type: integer) Battery attachment's remaining charge in percent  
 
 **`fov`** (type: string) Field of view  
-`'170'`  
-`'127'`  
-`'90'`  
+`"170"`  
+`"127"`  
+`"90"`  
 
 **`picres`** (type: string) Resolution of still photos  
-`5MP med`  
-`7MP med`  
-`7MP wide`  
-`12MP wide`  
+`"5MP med"`  
+`"7MP med"`  
+`"7MP wide"`  
+`"12MP wide"`  
 
 **`secselapsed`** (type: integer) While recording, how many seconds have been recorded this time  
 
@@ -132,17 +132,17 @@ where `status` is the name of a piece of information, and `value` is its value. 
 **`recording`** (type: boolean) Whether the GoPro is recording  
 
 **`fps`** (type: string) Frames per second of video  
-`'12'`  
-`'15'`  
-`'24'`  
-`'25'`  
-`'30'`  
-`'48'`  
-`'50'`  
-`'60'`  
-`'100'`  
-`'120'`  
-`'240'`  
+`"12"`  
+`"15"`  
+`"24"`  
+`"25"`  
+`"30"`  
+`"48"`  
+`"50"`  
+`"60"`  
+`"100"`  
+`"120"`  
+`"240"`  
 
 ## Credits
 
