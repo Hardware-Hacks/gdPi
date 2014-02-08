@@ -94,7 +94,7 @@ Below is a list of all the commands and their possible parameter values. Anythin
 
 #### Status
 
-In order to grab the status of the GoPro, send a request to gdPi at `/status`, including the password parameter, or send a command, which will return the status in the response body. Status is always returned in a `jsonp` block. The JSON inside of it will look like this:
+In order to grab the status of the GoPro, send a request to gdPi at `/status`, including the password parameter, or send a command, which will return the status in the response body. Status is always returned in a `jsonp` block. The JSON inside of it will be an associative array that looks like this:
 
     {"status": "value", "status": "value", ...}
 
